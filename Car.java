@@ -68,7 +68,7 @@ public class Car {
     }
 
     // TODO fix this method according to lab pm
-    public void gas(double amount){
+    public void gas(double amount){  // restructure for readability -- remove nested ifs 
         if ((amount >= 0) && (amount <= 1)) {
             double v1 = getCurrentSpeed();
             incrementSpeed(amount);
