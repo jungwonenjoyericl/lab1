@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Car {
+public class Car implements Movable {
 
     protected boolean turboOn;
     protected int nrDoors; // Number of doors on the car
@@ -8,6 +8,10 @@ public class Car {
     protected double currentSpeed; // The current speed of the car
     protected Color color; // Color of the car
     protected String modelName; // The car model name
+
+    protected double xCoord = 0.0;
+    protected double yCoord = 0.0;
+    protected int carAngle = 0;
 
     //public Car(){
         //nrDoors = 2;
@@ -66,31 +70,47 @@ public class Car {
     public void decrementSpeed(double amount){
         currentSpeed = getCurrentSpeed() - speedFactor() * amount;
     }
+    // TODO fix this method according to lab pm
+    public void gas(double amount){ 
+        if ((amount < 0) || (amount > 1)){
+            return;
+        }
+
+        double v0 = getCurrentSpeed();
+        incrementSpeed(amount);
+
+        if ((getCurrentSpeed() < v0) || (getCurrentSpeed() > getEnginePower())){
+            decrementSpeed(amount);
+            return;
+        }        
+    }
 
     // TODO fix this method according to lab pm
-    public void gas(double amount){  // restructure for readability -- remove nested ifs 
-        if ((amount >= 0) && (amount <= 1)) {
-            double v1 = getCurrentSpeed();
+    public void brake(double amount){
+        if ((amount < 0) || (amount > 1)){
+            return;
+        }
+
+        double v0 = getCurrentSpeed();
+        decrementSpeed(amount);
+
+        if ((getCurrentSpeed() > v0) || (getCurrentSpeed() < 0)){
             incrementSpeed(amount);
-            if (getCurrentSpeed() > v1) { //can't slow down
-                if (getCurrentSpeed() < getEnginePower()) {
-                    decrementSpeed(amount);
-                }
-            }
+            return;
         }
     }
 
 
-    // TODO fix this method according to lab pm
-    public void brake(double amount){
-        if ((amount >= 0) && (amount <= 1)) {
-            double v1 = getCurrentSpeed();
-            decrementSpeed(amount);
-            if (getCurrentSpeed() < v1) { // undo if brake speeds up car
-                if (getCurrentSpeed() > 0) {
-                    incrementSpeed(amount);
-                }
-            }
-        }
+    public void move() {
+        xCoord = Math.sin(carAngle)*currentSpeed;
+        yCoord = Math.cos(carAngle)*currentSpeed;
+    }
+
+    public void turnLeft() {
+        carAngle = (carAngle + 10)%360;
+    }
+
+    public void turnRight() {
+        carAngle = (carAngle - 10)%360;
     }
 }

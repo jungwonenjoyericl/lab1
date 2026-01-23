@@ -1,13 +1,7 @@
-public class Movable {
-    void move() {
-        ;
-    }
+public interface Movable {
 
-    void turnLeft() {
-        ;
-    }
+    void move();
+    void turnLeft();
+    void turnRight();
 
-    void turnRight() {
-        ;
-    }
 }
